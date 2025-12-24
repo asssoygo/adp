@@ -1,8 +1,10 @@
-package employee
+package Employee
+
+import "fmt"
 
 type Employee interface {
 	CalculateSalary() float64
-	GetWorkHours() int
+	CalculateBonus() float64
 }
 
 type FullTime struct {
@@ -11,11 +13,11 @@ type FullTime struct {
 }
 
 func (f FullTime) CalculateSalary() float64 {
-	return f.MonthlySalary + f.MonthlySalary*f.BonusRate
+	return f.MonthlySalary
 }
 
-func (f FullTime) GetWorkHours() int {
-	return 160
+func (f FullTime) CalculateBonus() float64 {
+	return f.MonthlySalary * f.BonusRate
 }
 
 type PartTime struct {
@@ -24,9 +26,49 @@ type PartTime struct {
 }
 
 func (p PartTime) CalculateSalary() float64 {
-	return float64(p.HoursWorked) * p.HourlyRate
+	return p.HourlyRate * float64(p.HoursWorked)
 }
 
-func (p PartTime) GetWorkHours() int {
-	return p.HoursWorked
+func (p PartTime) CalculateBonus() float64 {
+	return 0
+}
+
+type Contractor struct {
+	ProjectRate       float64
+	ProjectsCompleted int
+}
+
+func (c Contractor) CalculateSalary() float64 {
+	return c.ProjectRate * float64(c.ProjectsCompleted)
+}
+
+func (c Contractor) CalculateBonus() float64 {
+	return c.ProjectRate * 0.1
+}
+
+type Intern struct {
+	DailyRate  float64
+	DaysWorked int
+}
+
+func (i Intern) CalculateSalary() float64 {
+	return i.DailyRate * float64(i.DaysWorked)
+}
+
+func (i Intern) CalculateBonus() float64 {
+	return 0
+}
+
+func RunEmployeeDemo() {
+	employees := []Employee{
+		FullTime{500000, 0.2},
+		PartTime{3000, 80},
+		Contractor{200000, 2},
+		Intern{5000, 20},
+	}
+
+	for i, e := range employees {
+		fmt.Printf("Employee %d Salary: %.2f Bonus: %.2f\n",
+			i+1, e.CalculateSalary(), e.CalculateBonus())
+	}
 }
