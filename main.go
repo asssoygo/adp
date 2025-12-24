@@ -1,40 +1,39 @@
 package main
 
 import (
+	"adp/Employee"
+	"adp/Gym"
+	"adp/Hotel"
+	"adp/Wallet"
 	"fmt"
-
-	"github.com/Asylkhan/Assignment1/employee"
-	"github.com/Asylkhan/Assignment1/gym"
-	"github.com/Asylkhan/Assignment1/hotel"
-	"github.com/Asylkhan/Assignment1/wallet"
 )
 
 func main() {
-	// ---- HOTEL ----
-	h := hotel.Hotel{Rooms: make(map[string]hotel.Room)}
-	h.AddRoom(hotel.Room{"101", "Single", 100, false})
-	h.AddRoom(hotel.Room{"102", "Double", 150, false})
-	h.CheckIn("101")
-	h.ListVacantRooms()
+	for {
+		fmt.Println("\n===== MAIN MENU =====")
+		fmt.Println("1. Hotel System")
+		fmt.Println("2. Employee Salaries")
+		fmt.Println("3. Gym Membership")
+		fmt.Println("4. Wallet System")
+		fmt.Println("0. Exit")
 
-	// ---- EMPLOYEE ----
-	employees := []employee.Employee{
-		employee.FullTime{MonthlySalary: 2000, BonusRate: 0.1},
-		employee.PartTime{HourlyRate: 10, HoursWorked: 80},
+		var choice int
+		fmt.Scanln(&choice)
+
+		switch choice {
+		case 1:
+			Hotel.RunHotelMenu()
+		case 2:
+			Employee.RunEmployeeDemo()
+		case 3:
+			Gym.RunGymDemo()
+		case 4:
+			Wallet.RunWalletMenu()
+		case 0:
+			fmt.Println("Exiting program...")
+			return
+		default:
+			fmt.Println("Invalid option")
+		}
 	}
-
-	for _, e := range employees {
-		fmt.Println("Salary:", e.CalculateSalary())
-	}
-
-	// ---- GYM ----
-	g := gym.Gym{Members: make(map[uint64]gym.Member)}
-	g.AddMember(1, gym.BasicMember{Name: "Ali"})
-	g.ListMembers()
-
-	// ---- WALLET ----
-	w := wallet.Wallet{}
-	w.AddMoney(500)
-	w.SpendMoney(120)
-	fmt.Println("Wallet balance:", w.GetBalance())
 }
